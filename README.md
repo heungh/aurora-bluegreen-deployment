@@ -107,20 +107,15 @@ export AWS_DEBUG=True
 export AWS_LOG_LEVEL=DEBUG
 ```
 
-## Data Flow
+## BlueGreen Task Flow
 The toolkit manages Aurora MySQL cluster upgrades through AWS Blue/Green deployment mechanism, coordinating creation, validation, and switchover processes.
 
-```ascii
-[Source Cluster] --> [Blue/Green Creation] --> [Green Cluster]
-                                                    |
-[Validation & Monitoring] <-------------------------|
-          |
-          v
-[Switchover] --> [Cleanup Old Resources]
+![Image](https://github.com/user-attachments/assets/bcd4e58a-56ef-4ba3-a02f-3d6528957279)
 ```
 
 Blue/Green 배포 전 과정을 정리하면 다음과 같습니다:
-1. 생성 프로세스는 소스 클러스터를 검증하고 Green 환경을 생성합니다.
-2. 모니터링은 배포 상태를 확인하여 배포가 제대로 되었는지 검증합니다. 
-3. 전환과정을 통해 효과적으로 Blue/Green 전환을 진행합니다. (사전에 꼭 먼저 체크하시기 바랍니다)
-4. 구 클러스터(old_로 시작하는 블루 클러스터)를 충분한 시간동안 확인하고 나서, 제거합니다. 
+1. Blue/Green 배포(Deployment) 및 Green 클러스터 업그레이드
+2. Blue/Green 전환 하기전 사전체크
+3. Blue/Green 전환(Switch Over) 실행
+4. Blue/Green 전환 사후 점검 
+5. Old Blue 클러스터 삭제
